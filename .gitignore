@@ -1,0 +1,25 @@
+abinito_data/
+protein_data/
+reference/
+software/
+transcript_data/
+scripts/RCC/SLURM_logs/*
+scripts/RCC/trinity_out_dir/
+
+
+# FASTA files
+*.fa
+*.fasta
+*.fas
+*.fna
+*.ffn
+*.faa
+*.frn
+
+# Compressed FASTA files
+*.fa.gz
+*.fasta.gz
+*.fa.bz2
+*.fasta.bz2
+*.fa.zip
+*.fasta.zip

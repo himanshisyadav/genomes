@@ -1,9 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=trinity_denovo
 #SBATCH --partition=caslake
-##SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --time=02:00:00
+#SBATCH --time=12:00:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=128gb
 #SBATCH --output=./SLURM_logs/trinity_denovo_%j.out
@@ -14,6 +13,10 @@
 
 # Load required modules
 module load apptainer/1.4.1
+module load gcc
+module load java/21.0 
+module load samtools
+module load htslib
 
 # Print SLURM job information
 echo "=========================================="
@@ -96,19 +99,17 @@ else
 fi
 
 # Run Trinity with apptainer
-echo "Starting Trinity assembly..."
+echo "Starting Trinity Grid assembly..."
 
-echo "Using image: $IMAGE_PATH"
-
-apptainer exec --bind $BIND_MOUNTS $IMAGE_PATH Trinity \
-    --seqType fq \
-    --left $LEFT_FILES_CONTAINER \
-    --right $RIGHT_FILES_CONTAINER \
-    --CPU 4 \
+srun ./trinityrnaseq/Trinity --seqType fq \
+    --max_memory 100G \
+    --left $LEFT_FILES --right $RIGHT_FILES \
+    --CPU ${SLURM_CPUS_PER_TASK} \
+    --grid_exec "$HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_cmds_GridRunner.pl \
+    --grid_conf $HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_conf/SLURM.Midway3.conf -c" \
+    --output ./trinity_out_dir \
     --normalize_by_read_set \
-    --min_kmer_cov 2 --max_memory 2G \
-    --grid_exec "$CONTAINER_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_cmds_GridRunner.pl \
-    --grid_conf $CONTAINER_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_conf/SLURM.Midway3.conf -c"
+
 
 
 

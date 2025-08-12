@@ -3,9 +3,10 @@
 #SBATCH --partition=caslake
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=5:00:00
+#SBATCH --time=1:00:00
 #SBATCH --cpus-per-task=48
-#SBATCH --mem=128gb
+##SBATCH --mem=170G
+#SBATCH --mem=128G
 #SBATCH --output=./SLURM_logs/trinity_denovo_%j.out
 #SBATCH --error=./SLURM_logs/trinity_denovo_%j.err
 #SBATCH --account=rcc-staff
@@ -99,12 +100,15 @@ echo "Starting Trinity assembly..."
 
 echo "Using image: $IMAGE_PATH"
 
-apptainer exec --bind $BIND_MOUNTS $IMAGE_PATH Trinity \
-    --seqType fq \
-    --max_memory $SLURM_MEM_PER_NODE \
-    --left $LEFT_FILES_CONTAINER \
-    --right $RIGHT_FILES_CONTAINER \
-    --CPU $SLURM_CPUS_PER_TASK \
-    --normalize_by_read_set \
-    --min_kmer_cov 2 --no_parallel_norm_stats --max_memory 50G \
-    --no_distributed_trinity_exec \
+apptainer exec \
+    --bind $BIND_MOUNTS \
+    $IMAGE_PATH \
+    Trinity \
+        --seqType fq \
+        --max_memory $SLURM_MEM_PER_NODE \
+        --left $LEFT_FILES_CONTAINER \
+        --right $RIGHT_FILES_CONTAINER \
+        --CPU $SLURM_CPUS_PER_TASK \
+        --normalize_by_read_set \
+        --min_kmer_cov 2 \
+        --no_parallel_norm_stats --max_memory 50G 

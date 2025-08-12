@@ -2,9 +2,9 @@
 #SBATCH --job-name=trinity_denovo
 #SBATCH --partition=caslake
 #SBATCH --ntasks=1
-#SBATCH --time=12:00:00
+#SBATCH --time=00:10:00
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=128gb
+#SBATCH --mem=16G
 #SBATCH --output=./SLURM_logs/trinity_denovo_%j.out
 #SBATCH --error=./SLURM_logs/trinity_denovo_%j.err
 #SBATCH --account=rcc-staff
@@ -17,6 +17,7 @@ module load gcc
 module load java/21.0 
 module load samtools
 module load htslib
+
 
 # Print SLURM job information
 echo "=========================================="
@@ -101,8 +102,10 @@ fi
 # Run Trinity with apptainer
 echo "Starting Trinity Grid assembly..."
 
+export PATH=/usr/bin:$PATH
+
 srun ./trinityrnaseq/Trinity --seqType fq \
-    --max_memory 100G \
+    --max_memory 16G \
     --left $LEFT_FILES --right $RIGHT_FILES \
     --CPU ${SLURM_CPUS_PER_TASK} \
     --grid_exec "$HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_cmds_GridRunner.pl \

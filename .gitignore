@@ -3,6 +3,9 @@ protein_data/
 reference/
 software/
 transcript_data/
+
+scripts/CRI
+
 # Ignore Trinity output and software directories
 scripts/RCC/Trinity/SLURM_logs/
 scripts/RCC/Trinity/trinity_out_dir/

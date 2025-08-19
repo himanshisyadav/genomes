@@ -60,15 +60,9 @@ For actual data analysis:
 ## Contributing
 
 1. Keep data files out of version control
-2. Document new analysis tools in `software/`
+2. Document new analysis tools in `scripts/`
 3. Update README files when adding new workflows
 4. Use descriptive commit messages
 
-## Contact
-
-- **Maintainer**: [Himi Yadav]
-- **Email**: [hyadav@uchicago.edu, himanshimj@gmail.com]
-- **Institution**: [Research Computing Center, The University of Chicago]
-
 ---
-*Last updated: [19 August 2025]*
+*Last updated: 19 August 2025*

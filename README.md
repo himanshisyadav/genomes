@@ -15,7 +15,7 @@ This repository contains Slurm batch scripts and configurations for running geno
 
 ### 📁 `scripts/`
 Collection of bioinformatics software tools, each with corresponding Slurm batch scripts for cluster execution. Each subdirectory contains:
-- Batch scripts (`.sbatch or .sh` files)
+- Batch scripts (`.sbatch` or `.sh` files)
 - Configuration files
 - Tool-specific documentation
 - Usage examples
@@ -39,7 +39,7 @@ Navigate to the `scripts/` directory and follow the instructions in [`scripts/RE
 This repository contains **only** Slurm scripts and configurations - no data files are stored here.
 
 ### What's Tracked
-- Slurm batch scripts (`.sbatch or .sh` files)
+- Slurm batch scripts (`.sbatch` or `.sh` files)
 - Configuration files for software tools
 - Documentation and README files
 - Shell scripts and utilities

@@ -3,9 +3,14 @@ protein_data/
 reference/
 software/
 transcript_data/
+# Ignore Trinity output and software directories
 scripts/RCC/Trinity/SLURM_logs/
 scripts/RCC/Trinity/trinity_out_dir/
 scripts/RCC/Trinity/trinityrnaseq/
+
+scripts/RCC/PASA/SLURM_logs/
+scripts/RCC/PASA/cleaning*
+scripts/RCC/PASA/outparts_cln.sort
 
 
 # FASTA files

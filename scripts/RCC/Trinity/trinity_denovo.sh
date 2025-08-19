@@ -5,7 +5,6 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=1:00:00
 #SBATCH --cpus-per-task=48
-##SBATCH --mem=170G
 #SBATCH --mem=128G
 #SBATCH --output=./SLURM_logs/trinity_denovo_%j.out
 #SBATCH --error=./SLURM_logs/trinity_denovo_%j.err

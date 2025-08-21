@@ -4,17 +4,17 @@ reference/
 software/
 transcript_data/
 
+SLURM_logs/
+
 scripts/CRI
 
 # Ignore Trinity output and software directories
-scripts/RCC/Trinity/SLURM_logs/
 scripts/RCC/Trinity/trinity_out_dir/
 scripts/RCC/Trinity/trinityrnaseq/
 
-scripts/RCC/PASA/SLURM_logs/
+# Ignore PASA intermediate files
 scripts/RCC/PASA/cleaning*
 scripts/RCC/PASA/outparts_cln.sort
-
 
 # FASTA files
 *.fa

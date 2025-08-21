@@ -1,0 +1,97 @@
+STAR version=2.7.11b
+STAR compilation time,server,dir=2024-11-25T09:14:51+0000 :/opt/conda/conda-bld/star_1732525954305/work/source
+##### Command Line:
+/opt/conda/bin/STAR-avx2 --runThreadN 6 --runMode genomeGenerate --genomeSAindexNbases 13 --genomeDir /workspace/reference/Scer_genome.star --genomeFastaFiles /workspace/reference/Scer_genome.fa
+##### Initial USER parameters from Command Line:
+###### All USER parameters from Command Line:
+runThreadN                    6     ~RE-DEFINED
+runMode                       genomeGenerate        ~RE-DEFINED
+genomeSAindexNbases           13     ~RE-DEFINED
+genomeDir                     /workspace/reference/Scer_genome.star     ~RE-DEFINED
+genomeFastaFiles              /workspace/reference/Scer_genome.fa        ~RE-DEFINED
+##### Finished reading parameters from all sources
+
+##### Final user re-defined parameters-----------------:
+runMode                           genomeGenerate   
+runThreadN                        6
+genomeDir                         /workspace/reference/Scer_genome.star
+genomeFastaFiles                  /workspace/reference/Scer_genome.fa   
+genomeSAindexNbases               13
+
+-------------------------------
+##### Final effective command line:
+/opt/conda/bin/STAR-avx2   --runMode genomeGenerate      --runThreadN 6   --genomeDir /workspace/reference/Scer_genome.star   --genomeFastaFiles /workspace/reference/Scer_genome.fa      --genomeSAindexNbases 13
+----------------------------------------
+
+Number of fastq files for each mate = 1
+ParametersSolo: --soloCellFilterType CellRanger2.2 filtering parameters:  3000 0.99 10
+Finished loading and checking parameters
+--genomeDir directory exists and will be overwritten: /workspace/reference/Scer_genome.star/
+!!!!! WARNING: Could not move Log.out file from ./Log.out into /workspace/reference/Scer_genome.star/Log.out. Will keep ./Log.out
+
+Aug 21 17:26:57 ... starting to generate Genome files
+/workspace/reference/Scer_genome.fa : chr # 0  "NC_001133.9" chrStart: 0
+/workspace/reference/Scer_genome.fa : chr # 1  "NC_001134.8" chrStart: 262144
+/workspace/reference/Scer_genome.fa : chr # 2  "NC_001135.5" chrStart: 1310720
+/workspace/reference/Scer_genome.fa : chr # 3  "NC_001136.10" chrStart: 1835008
+/workspace/reference/Scer_genome.fa : chr # 4  "NC_001137.3" chrStart: 3407872
+/workspace/reference/Scer_genome.fa : chr # 5  "NC_001138.5" chrStart: 4194304
+/workspace/reference/Scer_genome.fa : chr # 6  "NC_001139.9" chrStart: 4718592
+/workspace/reference/Scer_genome.fa : chr # 7  "NC_001140.6" chrStart: 6029312
+/workspace/reference/Scer_genome.fa : chr # 8  "NC_001141.2" chrStart: 6815744
+/workspace/reference/Scer_genome.fa : chr # 9  "NC_001142.9" chrStart: 7340032
+/workspace/reference/Scer_genome.fa : chr # 10  "NC_001143.9" chrStart: 8126464
+/workspace/reference/Scer_genome.fa : chr # 11  "NC_001144.5" chrStart: 8912896
+/workspace/reference/Scer_genome.fa : chr # 12  "NC_001145.3" chrStart: 10223616
+/workspace/reference/Scer_genome.fa : chr # 13  "NC_001146.8" chrStart: 11272192
+/workspace/reference/Scer_genome.fa : chr # 14  "NC_001147.6" chrStart: 12058624
+/workspace/reference/Scer_genome.fa : chr # 15  "NC_001148.4" chrStart: 13369344
+/workspace/reference/Scer_genome.fa : chr # 16  "NC_001224.1" chrStart: 14417920
+Chromosome sequence lengths: 
+NC_001133.9	230218
+NC_001134.8	813184
+NC_001135.5	316620
+NC_001136.10	1531933
+NC_001137.3	576874
+NC_001138.5	270161
+NC_001139.9	1090940
+NC_001140.6	562643
+NC_001141.2	439888
+NC_001142.9	745751
+NC_001143.9	666816
+NC_001144.5	1078177
+NC_001145.3	924431
+NC_001146.8	784333
+NC_001147.6	1091291
+NC_001148.4	948066
+NC_001224.1	85779
+Genome sequence total length = 12157105
+Genome size with padding = 14680064
+!!!!! WARNING: --genomeSAindexNbases 13 is too large for the genome size=12157105, which may cause seg-fault at the mapping step. Re-run genome generation with recommended --genomeSAindexNbases 10
+Estimated genome size with padding and SJs: total=genome+SJ=215680064 = 14680064 + 201000000
+GstrandBit=32
+Number of SA indices: 24314210
+Aug 21 17:26:57 ... starting to sort Suffix Array. This may take a long time...
+Number of chunks: 6;   chunks size limit: 38902736 bytes
+Aug 21 17:26:57 ... sorting Suffix Array chunks and saving them to disk...
+Writing 38658696 bytes into /workspace/reference/Scer_genome.star//SA_0 ; empty space on disk = 185057419460608 bytes ... done
+Writing 38811568 bytes into /workspace/reference/Scer_genome.star//SA_1 ; empty space on disk = 185057419460608 bytes ... done
+Writing 38380744 bytes into /workspace/reference/Scer_genome.star//SA_2 ; empty space on disk = 185057339768832 bytes ... done
+Writing 38551992 bytes into /workspace/reference/Scer_genome.star//SA_3 ; empty space on disk = 185057339768832 bytes ... done
+Writing 37244952 bytes into /workspace/reference/Scer_genome.star//SA_4 ; empty space on disk = 185057339768832 bytes ... done
+Writing 2865728 bytes into /workspace/reference/Scer_genome.star//SA_5 ; empty space on disk = 185057339768832 bytes ... done
+Aug 21 17:27:07 ... loading chunks from disk, packing SA...
+Aug 21 17:27:07 ... finished generating suffix array
+Aug 21 17:27:07 ... generating Suffix Array index
+Aug 21 17:27:11 ... completed Suffix Array index
+Aug 21 17:27:11 ... writing Genome to disk ...
+Writing 14680064 bytes into /workspace/reference/Scer_genome.star//Genome ; empty space on disk = 185057415266304 bytes ... done
+SA size in bytes: 100296120
+Aug 21 17:27:11 ... writing Suffix Array to disk ...
+Writing 100296120 bytes into /workspace/reference/Scer_genome.star//SA ; empty space on disk = 185057415266304 bytes ... done
+Aug 21 17:27:11 ... writing SAindex to disk
+Writing 8 bytes into /workspace/reference/Scer_genome.star//SAindex ; empty space on disk = 185057415266304 bytes ... done
+Writing 112 bytes into /workspace/reference/Scer_genome.star//SAindex ; empty space on disk = 185057415266304 bytes ... done
+Writing 391468371 bytes into /workspace/reference/Scer_genome.star//SAindex ; empty space on disk = 185057415266304 bytes ... done
+Aug 21 17:27:11 ..... finished successfully
+DONE: Genome generation, EXITING

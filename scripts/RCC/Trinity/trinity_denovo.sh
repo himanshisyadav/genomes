@@ -102,12 +102,12 @@ echo "Using image: $IMAGE_PATH"
 apptainer exec \
     --bind $BIND_MOUNTS \
     $IMAGE_PATH \
-    Trinity \
-        --seqType fq \
-        --max_memory $SLURM_MEM_PER_NODE \
-        --left $LEFT_FILES_CONTAINER \
-        --right $RIGHT_FILES_CONTAINER \
-        --CPU $SLURM_CPUS_PER_TASK \
-        --normalize_by_read_set \
-        --min_kmer_cov 2 \
-        --no_parallel_norm_stats --max_memory 50G 
+        Trinity \
+            --seqType fq \
+            --max_memory $SLURM_MEM_PER_NODE \
+            --left $LEFT_FILES_CONTAINER \
+            --right $RIGHT_FILES_CONTAINER \
+            --CPU $SLURM_CPUS_PER_TASK \
+            --normalize_by_read_set \
+            --min_kmer_cov 2 \
+            --no_parallel_norm_stats --max_memory 50G 

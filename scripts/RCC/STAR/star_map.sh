@@ -60,7 +60,9 @@ else
     exit 1
 fi
 
-# Run Trinity with apptainer
+SAMPLE_NAME=$(basename $(echo $FASTQ_FILES | cut -d',' -f1) | sed 's/_.*$//')
+
+# Run STAR mapping with apptainer
 echo "Starting STAR mapping..."
 
 echo "Using image: $IMAGE_PATH"
@@ -70,5 +72,5 @@ apptainer exec --bind $BIND_MOUNTS $IMAGE_PATH \
         --genomeDir $STAR_FILE \
         --readFilesIn $FASTQ_FILES_CONTAINER \
         --readFilesCommand zcat \
-        --outFileNamePrefix $CONTAINER_PROJECT_DIR/transcript_data/bams/${S} \
+        --outFileNamePrefix $CONTAINER_PROJECT_DIR/transcript_data/bams/$SAMPLE_NAME \
         --outSAMstrandField intronMotif --limitBAMsortRAM 89519393895 --outSAMtype BAM SortedByCoordinate

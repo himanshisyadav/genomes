@@ -43,7 +43,7 @@ IMAGE_PATH="$HOST_PROJECT_DIR/software/STAR.sif"
 
 BIND_MOUNTS="/home:/home,/scratch:/scratch,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR"
 
-# Run Trinity with apptainer
+# Run STAR indexing with apptainer
 echo "Starting STAR indexing..."
 
 echo "Using image: $IMAGE_PATH"

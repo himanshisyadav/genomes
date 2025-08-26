@@ -2,7 +2,7 @@
 #SBATCH --job-name=star_map
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=1:00:00
+#SBATCH --time=00:30:00
 #SBATCH --cpus-per-task=48
 #SBATCH --mem=96gb
 #SBATCH --output=./SLURM_logs/star_map_%j.out
@@ -62,6 +62,8 @@ fi
 
 SAMPLE_NAME=$(basename $(echo $FASTQ_FILES | cut -d',' -f1) | sed 's/_.*$//')
 
+echo "Sample name: $SAMPLE_NAME"
+
 # Run STAR mapping with apptainer
 echo "Starting STAR mapping..."
 
@@ -72,5 +74,5 @@ apptainer exec --bind $BIND_MOUNTS $IMAGE_PATH \
         --genomeDir $STAR_FILE \
         --readFilesIn $FASTQ_FILES_CONTAINER \
         --readFilesCommand zcat \
-        --outFileNamePrefix $CONTAINER_PROJECT_DIR/transcript_data/bams/$SAMPLE_NAME \
+        --outFileNamePrefix $CONTAINER_PROJECT_DIR/transcript_data/bams/${SAMPLE_NAME}_ \
         --outSAMstrandField intronMotif --limitBAMsortRAM 89519393895 --outSAMtype BAM SortedByCoordinate

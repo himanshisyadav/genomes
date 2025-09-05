@@ -37,7 +37,7 @@ cd software/  # Replace with desired software
 
 ### 2. Submit Job
 ```bash
-sbatch run.sh  # Use the appropriate batch script
+sbatch run.sh  # Use the appropriate sbatch script
 ```
 
 ### 3. Monitor Job
@@ -64,7 +64,7 @@ sinfo
 ```
 
 ## Notes
-- All batch scripts are configured for Midway3 cluster
+- All sbatch scripts are configured for Midway3 cluster
 - Default partition: caslake
 - For large jobs, consider using bigmem
 

@@ -88,7 +88,7 @@ echo "Array range: 1-$NUM_SAMPLES"
 
 # Submit the dependent array job
 ARRAY_JOB_ID=$(sbatch --dependency=afterok:${SLURM_JOB_ID} --array=1-${NUM_SAMPLES} --parsable star_map_array.sh)
-6
+
 if [ $? -eq 0 ]; then
     echo "Array job submitted successfully!"
     echo "Array Job ID: $ARRAY_JOB_ID"

@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=star_map_array
 #SBATCH --time=00:30:00
-#SBATCH --cpus-per-task=48
-#SBATCH --mem=96gb
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=48gb
 #SBATCH --output=./SLURM_logs/star_map_%A_%a.out
 #SBATCH --error=./SLURM_logs/star_map_%A_%a.err
 #SBATCH --account=rcc-staff
@@ -113,8 +113,11 @@ mkdir -p "$HOST_OUTPUT_DIR"
 
 # Create scratch directory for this sample
 SCRATCH_DIR="/scratch/midway3/hyadav/STAR_tmp/STAR_${SAMPLE}_${SLURM_ARRAY_TASK_ID}"
-echo "Creating scratch directory: $SCRATCH_DIR"
-mkdir -p "$SCRATCH_DIR"
+
+if [ -d "$SCRATCH_DIR" ]; then
+    echo "Cleaning up existing directory: $SCRATCH_DIR"
+    rm -rf "$SCRATCH_DIR"
+fi
 
 # Verify STAR index exists
 echo "Checking STAR index: $STAR_FILE"

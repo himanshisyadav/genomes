@@ -2,13 +2,13 @@
 #SBATCH --job-name=star_map
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=00:30:00
+#SBATCH --time=3:00:00
 #SBATCH --cpus-per-task=48
 #SBATCH --mem=96gb
 #SBATCH --output=./SLURM_logs/star_map_%j.out
 #SBATCH --error=./SLURM_logs/star_map_%j.err
 #SBATCH --account=rcc-staff
-##SBATCH --mail-type=ALL
+#SBATCH --mail-type=END
 #SBATCH --mail-user=hyadav@rcc.uchicago.edu
 
 module load apptainer/1.4.1
@@ -60,19 +60,35 @@ else
     exit 1
 fi
 
-SAMPLE_NAME=$(basename $(echo $FASTQ_FILES | cut -d',' -f1) | sed 's/_.*$//')
+SAMPLE_NAMES=$(echo "$FASTQ_FILES" | tr ',' '\n' | sed 's|.*/||; s/_.*$//' | sort | uniq | tr '\n' ' ')
 
-echo "Sample name: $SAMPLE_NAME"
+echo "Sample names: $SAMPLE_NAMES"
 
 # Run STAR mapping with apptainer
 echo "Starting STAR mapping..."
 
 echo "Using image: $IMAGE_PATH"
 
-apptainer exec --bind $BIND_MOUNTS $IMAGE_PATH \
+for SAMPLE in $SAMPLE_NAMES; do
+    echo "Processing sample: $SAMPLE"
+
+    FASTQ_FILES_CONTAINER="$CONTAINER_PROJECT_DIR/transcript_data/fastqs/${SAMPLE}_pass_1.fastq.gz \
+        $CONTAINER_PROJECT_DIR/transcript_data/fastqs/${SAMPLE}_pass_2.fastq.gz"
+
+    apptainer exec --bind $BIND_MOUNTS $IMAGE_PATH \
     STAR --runThreadN $SLURM_CPUS_PER_TASK \
         --genomeDir $STAR_FILE \
         --readFilesIn $FASTQ_FILES_CONTAINER \
         --readFilesCommand zcat \
-        --outFileNamePrefix $CONTAINER_PROJECT_DIR/transcript_data/bams/${SAMPLE_NAME}_ \
-        --outSAMstrandField intronMotif --limitBAMsortRAM 89519393895 --outSAMtype BAM SortedByCoordinate
+        --outFileNamePrefix $CONTAINER_PROJECT_DIR/transcript_data/bams/${SAMPLE} \
+        --outTmpDir /scratch/midway3/hyadav/STAR_tmp/STAR_${SAMPLE} \
+        --outSAMstrandField intronMotif \
+        --limitBAMsortRAM 89519393895 \
+        --outSAMtype BAM SortedByCoordinate
+
+    echo "Finished processing sample: $SAMPLE"
+done
+
+echo "All samples processed!"
+
+

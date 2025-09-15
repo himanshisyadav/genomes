@@ -62,6 +62,7 @@ cd /project/rcc/hyadav/genomes/transcript_data/bams/
 ls -lh 
 
 # 6. Merge BAM files using samtools
+module load samtools
 samtools merge --threads 4 -o merged.bam *.bam
 ```
 

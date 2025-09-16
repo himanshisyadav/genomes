@@ -34,4 +34,6 @@ scripts/RCC/PASA/outparts_cln.sort
 *.fasta.zip
 sample_list.txt
 
+temp/
+
 UniVec

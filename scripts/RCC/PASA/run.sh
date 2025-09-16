@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=pasa
+#SBATCH --job-name=pasa_launch
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=00:5:00
@@ -40,13 +40,13 @@ CONTAINER_PROJECT_DIR="/workspace"
 
 IMAGE_PATH="$HOST_PROJECT_DIR/software/PASA.sif"
 
-cd /project/rcc/hyadav/genomes/transcript_data/pasa/
+cd /project/rcc/hyadav/genomes/transcript_data/
 
 # Set bind mounts
-BIND_MOUNTS="$PWD/temp:/tmp,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR"
+BIND_MOUNTS="$HOST_PROJECT_DIR/scripts/RCC/PASA/temp:/tmp,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR"
 
-TRANSCRIPTS_PATH="$CONTAINER_PROJECT_DIR/transcript_data/trinity_transcripts.fa"
-TRANSCRIPTS_CLEAN_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/transcripts_combined/trinity_transcripts.fa.clean"
+TRANSCRIPTS_UNTRIMMED_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/trinity_transcripts.fa"
+TRANSCRIPTS_CLEAN_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/trinity_transcripts.fa.clean"
 DATABASE_CONFIG_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/sqlite.confs/alignAssembly.config"
 GENOME_PATH="$CONTAINER_PROJECT_DIR/transcript_data/yeast_genome/Scer_genome.fa"
 TRANS_GTF_PATH="$CONTAINER_PROJECT_DIR/transcript_data/stringtie/stringtie_yeast.gtf"
@@ -57,8 +57,10 @@ TDN_FILE="$CONTAINER_PROJECT_DIR/transcript_data/pasa/tdn.accs"
 apptainer run \
      --bind $BIND_MOUNTS \
      $IMAGE_PATH \
-          bash -c "cd /workspace/transcript_data/pasa \
-               && /usr/local/src/PASApipeline/Launch_PASA_pipeline.pl -c $DATABASE_CONFIG_PATH \
+          bash -c " \
+          cd /workspace/transcript_data/pasa \
+               && /usr/local/src/PASApipeline/Launch_PASA_pipeline.pl \
+               -c $DATABASE_CONFIG_PATH \
                --ALIGNERS gmap,blat,minimap2 \
                --MAX_INTRON_LENGTH 100000 \
                --CPU $SLURM_CPUS_PER_TASK \
@@ -67,9 +69,9 @@ apptainer run \
                --ALT_SPLICE \
                --stringent_alignment_overlap 30.0 \
                -T \
-               -g $GENOME_PATH \
-               -u $TRANSCRIPTS_PATH \
-               -t $TRANSCRIPTS_CLEAN_PATH \
+               --genome $GENOME_PATH \
+               -u $TRANSCRIPTS_UNTRIMMED_PATH \
+               --transcripts $TRANSCRIPTS_CLEAN_PATH \
                --TDN $TDN_FILE"
 
 

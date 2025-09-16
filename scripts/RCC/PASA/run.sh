@@ -2,12 +2,12 @@
 #SBATCH --job-name=pasa
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=3:00:00
-#SBATCH --cpus-per-task=48
-#SBATCH --mem=128G
+#SBATCH --time=00:5:00
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=12G
 #SBATCH --partition=caslake
-#SBATCH --output=./SLURM_logs/pasa_%j.out
-#SBATCH --error=./SLURM_logs/pasa_%j.err
+#SBATCH --output=./SLURM_logs/%x_%j.out
+#SBATCH --error=./SLURM_logs/%x_%j.err
 #SBATCH --account=rcc-staff
 #SBATCH --mail-type=ALL
 ##SBATCH --exclusive
@@ -45,10 +45,12 @@ cd /project/rcc/hyadav/genomes/transcript_data/pasa/
 # Set bind mounts
 BIND_MOUNTS="$PWD/temp:/tmp,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR"
 
-TRANSCRIPTS_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/transcripts_combined/trinity_out_dir.Trinity.fasta"
-TRANSCRIPTS_CLEAN_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/transcripts_combined/trinity_out_dir.Trinity.fasta.clean"
+TRANSCRIPTS_PATH="$CONTAINER_PROJECT_DIR/transcript_data/trinity_transcripts.fa"
+TRANSCRIPTS_CLEAN_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/transcripts_combined/trinity_transcripts.fa.clean"
 DATABASE_CONFIG_PATH="$CONTAINER_PROJECT_DIR/transcript_data/pasa/sqlite.confs/alignAssembly.config"
 GENOME_PATH="$CONTAINER_PROJECT_DIR/transcript_data/yeast_genome/Scer_genome.fa"
+TRANS_GTF_PATH="$CONTAINER_PROJECT_DIR/transcript_data/stringtie/stringtie_yeast.gtf"
+TDN_FILE="$CONTAINER_PROJECT_DIR/transcript_data/pasa/tdn.accs"
 
 # echo "Running PASA assembly alignment..."
 
@@ -59,14 +61,15 @@ apptainer run \
                && /usr/local/src/PASApipeline/Launch_PASA_pipeline.pl -c $DATABASE_CONFIG_PATH \
                --ALIGNERS gmap,blat,minimap2 \
                --MAX_INTRON_LENGTH 100000 \
-               --CPU 8 \
+               --CPU $SLURM_CPUS_PER_TASK \
+               --trans_gtf $TRANS_GTF_PATH \
                --create --run \
                --ALT_SPLICE \
                --stringent_alignment_overlap 30.0 \
                -T \
                -g $GENOME_PATH \
                -u $TRANSCRIPTS_PATH \
-               -t $TRANSCRIPTS_CLEAN_PATH"
-               # --TDN tdn.accs"  
+               -t $TRANSCRIPTS_CLEAN_PATH \
+               --TDN $TDN_FILE"
 
 

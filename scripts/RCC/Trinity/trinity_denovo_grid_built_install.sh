@@ -1,19 +1,23 @@
 #!/bin/bash
-#SBATCH --job-name=trinity_denovo
+#SBATCH --job-name=trinity_grid
 #SBATCH --partition=caslake
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --time=1:00:00
-#SBATCH --cpus-per-task=48
-#SBATCH --mem=128G
-#SBATCH --output=./SLURM_logs/trinity_denovo_%j.out
-#SBATCH --error=./SLURM_logs/trinity_denovo_%j.err
+#SBATCH --ntasks=1
+#SBATCH --time=00:10:00
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=16G
+#SBATCH --output=./SLURM_logs/trinity_grid_%j.out
+#SBATCH --error=./SLURM_logs/trinity_grid_%j.err
 #SBATCH --account=rcc-staff
 #SBATCH --mail-type=ALL
 ##SBATCH --exclusive
 
 # Load required modules
 module load apptainer/1.4.1
+module load gcc
+module load java/21.0 
+module load samtools
+module load htslib
+
 
 # Print SLURM job information
 echo "=========================================="
@@ -41,21 +45,22 @@ echo "Calculated max_memory argument: $max_memory_arg"
 echo ""
 
 # Set variables
-HOST_PROJECT_DIR="/project/rcc/hyadav/genomes"
+HOST_PROJECT_DIR="/scratch/midway3/hyadav/Trinity"
 CONTAINER_PROJECT_DIR="/workspace"
 
-IMAGE_PATH="$HOST_PROJECT_DIR/software/trinityrnaseq.v2.15.2.simg"
+IMAGE_PATH="/project/rcc/hyadav/genomes/software/trinityrnaseq.v2.15.2.simg"
 
 # HOST_FASTQ_DIR="$HOST_PROJECT_DIR/transcript_data/fastqs"
-HOST_FASTQ_DIR="/scratch/midway3/hyadav/fastqs"
-CONTAINER_FASTQ_DIR="/trinity_input_fastqs"
+HOST_FASTQ_DIR="$HOST_PROJECT_DIR/fastqs"
+CONTAINER_FASTQ_DIR="$CONTAINER_PROJECT_DIR/fastqs"
 
 # HOST_OUTPUT_DIR="$HOST_PROJECT_DIR/transcript_data/trinity_denovo"
-HOST_OUTPUT_DIR="/scratch/midway3/hyadav/trinity_out_dir"
-CONTAINER_OUTPUT_DIR="/trinity_output"
+HOST_OUTPUT_DIR="$HOST_PROJECT_DIR/trinity_out_dir"
+CONTAINER_OUTPUT_DIR="$CONTAINER_PROJECT_DI/trinity_out_dir"
 
 # Optional: Set bind mounts
-BIND_MOUNTS="/home:/home,/scratch:/scratch,$HOST_FASTQ_DIR:$CONTAINER_FASTQ_DIR,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR,$HOST_OUTPUT_DIR:$CONTAINER_OUTPUT_DIR"
+BIND_MOUNTS="/scratch:/scratch,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR, \
+            $HOST_FASTQ_DIR:$CONTAINER_FASTQ_DIR,$HOST_OUTPUT_DIR:$CONTAINER_OUTPUT_DIR"
 
 # Debug: Check if directory exists and list files
 echo "Checking FASTQ directory: $FASTQ_DIR"
@@ -79,6 +84,7 @@ fi
 if ls $HOST_FASTQ_DIR/*1.fastq.gz 1> /dev/null 2>&1; then
     LEFT_FILES=$(ls $HOST_FASTQ_DIR/*1.fastq.gz | tr '\n' ',' | sed 's/,$//')
     echo "Left files found: $LEFT_FILES"
+    # LEFT_FILES_CONTAINER=$(echo $LEFT_FILES | sed "s|$PROJECT_DIR|/workspace|g")
     LEFT_FILES_CONTAINER=$(echo "$LEFT_FILES" | sed "s|$HOST_FASTQ_DIR|$CONTAINER_FASTQ_DIR|g" | tr '\n' ',' | sed 's/,$//')
     echo "Left files for container: $LEFT_FILES_CONTAINER"
 else
@@ -101,19 +107,21 @@ else
 fi
 
 # Run Trinity with apptainer
-echo "Starting Trinity assembly..."
+echo "Starting Trinity Grid assembly..."
 
-echo "Using image: $IMAGE_PATH"
+export PATH=/usr/bin:$PATH
 
-apptainer exec \
-    --bind $BIND_MOUNTS \
-    $IMAGE_PATH \
-        Trinity \
-            --seqType fq \
-            --max_memory $max_memory_arg \
-            --left $LEFT_FILES_CONTAINER \
-            --right $RIGHT_FILES_CONTAINER \
-            --CPU $SLURM_CPUS_PER_TASK \
-            --normalize_by_read_set \
-            --min_kmer_cov 2 \
-            --no_parallel_norm_stats 
+srun ./trinityrnaseq/Trinity --seqType fq \
+    --max_memory $max_memory_arg \
+    --left $LEFT_FILES --right $RIGHT_FILES \
+    --CPU ${SLURM_CPUS_PER_TASK} \
+    --grid_exec "$HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_cmds_GridRunner.pl \
+    --grid_conf $HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_conf/SLURM.Midway3.conf -c" \
+    --output ./trinity_grid_output \
+    --normalize_by_read_set \
+
+
+
+
+
+    

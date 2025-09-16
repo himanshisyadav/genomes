@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=trinity_denovo
+#SBATCH --job-name=trinity_grid
 #SBATCH --partition=caslake
 #SBATCH --ntasks=1
 #SBATCH --time=00:10:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16G
-#SBATCH --output=./SLURM_logs/trinity_denovo_%j.out
-#SBATCH --error=./SLURM_logs/trinity_denovo_%j.err
+#SBATCH --output=./SLURM_logs/trinity_grid_%j.out
+#SBATCH --error=./SLURM_logs/trinity_grid_%j.err
 #SBATCH --account=rcc-staff
 #SBATCH --mail-type=ALL
 ##SBATCH --exclusive
@@ -38,22 +38,29 @@ echo "Start Time: $(date)"
 echo "=========================================="
 echo ""
 
+# Parse memory to GB in the format "{integer}G" for Trinity
+mem_gb=$(echo "scale=0; $SLURM_MEM_PER_NODE / 1024" | bc)
+max_memory_arg="${mem_gb}G"
+echo "Calculated max_memory argument: $max_memory_arg"
+echo ""
+
 # Set variables
-HOST_PROJECT_DIR="/project/rcc/hyadav/genomes"
+HOST_PROJECT_DIR="/scratch/midway3/hyadav/Trinity"
 CONTAINER_PROJECT_DIR="/workspace"
 
-IMAGE_PATH="$HOST_PROJECT_DIR/software/trinityrnaseq.v2.15.2.simg"
+IMAGE_PATH="/project/rcc/hyadav/genomes/software/trinityrnaseq.v2.15.2.simg"
 
 # HOST_FASTQ_DIR="$HOST_PROJECT_DIR/transcript_data/fastqs"
-HOST_FASTQ_DIR="/scratch/midway3/hyadav/fastqs"
-CONTAINER_FASTQ_DIR="/trinity_input_fastqs"
+HOST_FASTQ_DIR="$HOST_PROJECT_DIR/fastqs"
+CONTAINER_FASTQ_DIR="$CONTAINER_PROJECT_DIR/fastqs"
 
 # HOST_OUTPUT_DIR="$HOST_PROJECT_DIR/transcript_data/trinity_denovo"
-HOST_OUTPUT_DIR="/scratch/midway3/hyadav/trinity_out_dir"
-CONTAINER_OUTPUT_DIR="/trinity_output"
+HOST_OUTPUT_DIR="$HOST_PROJECT_DIR/trinity_out_dir"
+CONTAINER_OUTPUT_DIR="$CONTAINER_PROJECT_DI/trinity_out_dir"
 
 # Optional: Set bind mounts
-BIND_MOUNTS="/home:/home,/scratch:/scratch,$HOST_FASTQ_DIR:$CONTAINER_FASTQ_DIR,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR,$HOST_OUTPUT_DIR:$CONTAINER_OUTPUT_DIR"
+BIND_MOUNTS="/scratch:/scratch,$HOST_PROJECT_DIR:$CONTAINER_PROJECT_DIR, \
+            $HOST_FASTQ_DIR:$CONTAINER_FASTQ_DIR,$HOST_OUTPUT_DIR:$CONTAINER_OUTPUT_DIR"
 
 # Debug: Check if directory exists and list files
 echo "Checking FASTQ directory: $FASTQ_DIR"
@@ -105,12 +112,12 @@ echo "Starting Trinity Grid assembly..."
 export PATH=/usr/bin:$PATH
 
 srun ./trinityrnaseq/Trinity --seqType fq \
-    --max_memory 16G \
+    --max_memory $max_memory_arg \
     --left $LEFT_FILES --right $RIGHT_FILES \
     --CPU ${SLURM_CPUS_PER_TASK} \
     --grid_exec "$HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_cmds_GridRunner.pl \
     --grid_conf $HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_conf/SLURM.Midway3.conf -c" \
-    --output ./trinity_out_dir \
+    --output ./trinity_grid_output \
     --normalize_by_read_set \
 
 

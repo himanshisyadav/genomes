@@ -118,7 +118,7 @@ srun ./trinityrnaseq/Trinity --seqType fq \
     --grid_exec "$HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_cmds_GridRunner.pl \
     --grid_conf $HOST_PROJECT_DIR/software/hpc-grid-runner/HpcGridRunner-1.0.2/hpc_conf/SLURM.Midway3.conf -c" \
     --output ./trinity_grid_output \
-    --normalize_by_read_set \
+    --normalize_by_read_set 
 
 
 

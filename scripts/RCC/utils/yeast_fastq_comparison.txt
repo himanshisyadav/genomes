@@ -1,0 +1,11 @@
+File	Size_MB	Reads_Million	Avg_Length	Intensity
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR30363504_pass_1.fastq.gz	1763	26.69	150	2029.90
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR30363504_pass_2.fastq.gz	1808	26.69	150	2074.90
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR30363505_pass_1.fastq.gz	1279	19.27	150	1471.70
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR30363505_pass_2.fastq.gz	1313	19.27	150	1505.70
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR33090568_pass_1.fastq.gz	619	9.38	150	712.80
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR33090568_pass_2.fastq.gz	636	9.38	150	729.80
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR34266552_pass_1.fastq.gz	1342	21.21	151	1554.10
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR34266552_pass_2.fastq.gz	1339	21.21	151	1551.10
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR34266557_pass_1.fastq.gz	1602	24.96	151	1851.60
+/project/rcc/hyadav/genomes/transcript_data/fastqs/SRR34266557_pass_2.fastq.gz	1598	24.96	151	1847.60

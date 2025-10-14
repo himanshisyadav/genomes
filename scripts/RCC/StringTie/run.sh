@@ -6,8 +6,8 @@
 #SBATCH --time=00:05:00
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=16gb
-#SBATCH --output=./SLURM_logs/Stringtie.out
-#SBATCH --error=./SLURM_logs/Stringtie.err
+#SBATCH --output=./SLURM_logs/Stringtie_%j.out
+#SBATCH --error=./SLURM_logs/Stringtie_%j.err
 #SBATCH --account=rcc-staff
 #SBATCH --mail-type=ALL
 
